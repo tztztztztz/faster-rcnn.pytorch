@@ -59,7 +59,7 @@ You can inspect the accuray of both foreground and background samples in RPN and
 	
 3. Compile `roi_pooling layer` and `gpu_nms`
     
-        cd $PROJECT/faster-rcnn
+        cd $PROJECT/faster_rcnn
         sh make.sh
 
 ## Training on PASCAL VOC
