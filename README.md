@@ -12,7 +12,7 @@
 - pillow
 - easydict
 - matplotlib
-- 
+
 ## Purpose
 
 - [x] Training and testing on VOC
