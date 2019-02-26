@@ -100,6 +100,9 @@ def test():
     model.eval()
 
     empty_array = np.transpose(np.array([[], [], [], [], []]), (1, 0))
+
+    torch.set_grad_enabled(False)
+
     for i in range(num_images):
         im_data, gt_boxes, im_info = next(data_iter)
         if args.use_cuda:
@@ -148,7 +151,7 @@ def test():
                 cls_dets = cls_dets[keep.view(-1).long()]
                 if args.vis:
                     clsname_dets = np.repeat(j, cls_dets.size(0))
-                    im2show = draw_detection_boxes(im2show, cls_dets.cpu().numpy(), clsname_dets, imdb.classes, 0.3)
+                    im2show = draw_detection_boxes(im2show, cls_dets.cpu().numpy(), clsname_dets, imdb.classes, 0.5)
                 all_boxes[j][i] = cls_dets.cpu().numpy()
             else:
                 all_boxes[j][i] = empty_array

@@ -12,7 +12,7 @@
 - pillow
 - easydict
 - matplotlib
-
+- 
 ## Purpose
 
 - [x] Training and testing on VOC
@@ -26,6 +26,24 @@
 | :--: | :--: | :--: | :--: |:--: |
 |this repo|VOC2007|VOC2007|res50|69.1|
 |original paper|VOC2007|VOC2007|res50|-|
+
+## Visualization
+
+You can inspect the accuray of both foreground and background samples in RPN and RCNN 
+
+<div style="color:#0000FF" align="center">
+<img src="images/rpn_log.png" width="100%"/>
+<img src="images/rcnn_log.png" width="100%"/> 
+</div>
+
+## Detection Results
+
+
+<div style="color:#0000FF" align="center">
+<img src="images/det_1.png" width="350px"/>
+<img src="images/det_2.png" width="350px"/>
+</div>
+
 
 ## Preparation
 
