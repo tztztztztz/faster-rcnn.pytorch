@@ -94,8 +94,8 @@ def combined_roidb(imdb_names, training=True):
     if len(roidbs) > 1:
         for r in roidbs[1:]:
             roidb.extend(r)
-        tmp = get_imdb(imdb_names.split('+')[1])
-        imdb = dataset.imdb.imdb(imdb_names, tmp.classes)
+        imdb = get_imdb(imdb_names.split('+')[0])
+        # imdb = dataset.imdb.imdb(imdb_names, tmp.classes)
     else:
         imdb = get_imdb(imdb_names)
 
