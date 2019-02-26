@@ -92,7 +92,6 @@ def test():
     max_per_image = 100
     det_file = os.path.join(args.output_dir, 'detections.pkl')
 
-
     num_images = len(imdb.image_index)
     all_boxes = [[[] for _ in range(num_images)]
                  for _ in range(imdb.num_classes)]

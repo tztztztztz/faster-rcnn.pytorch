@@ -76,6 +76,12 @@ def train():
         args.imdb_name = 'voc_2007_trainval'
         args.imdbval_name = 'voc_2007_test'
 
+    elif args.dataset == 'voc0712trainval':
+        args.imdb_name = 'voc_2007_trainval+voc_2012_trainval'
+        args.imdbval_name = 'voc_2007_test'
+    else:
+        raise NotImplementedError
+
     output_dir = args.output_dir
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)

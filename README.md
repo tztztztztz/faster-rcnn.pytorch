@@ -24,7 +24,7 @@
 
 | | training set | test set | network| mAP@600 |
 | :--: | :--: | :--: | :--: |:--: |
-|this repo|VOC2007|VOC2007|res50|69.1|
+|this repo|VOC2007|VOC2007|res50|71.6|
 |original paper|VOC2007|VOC2007|res50|-|
 
 ## Visualization
