@@ -95,7 +95,7 @@ def train():
 
     imdb, roidb = combined_roidb(args.imdb_name)
 
-    # roidb = roidb[:1]
+
 
     train_dataset = RoiDataset(roidb)
     train_dataloader = DataLoader(train_dataset, args.batch_size, shuffle=True)
@@ -103,7 +103,10 @@ def train():
     model = FasterRCNN(pretrained=args.pretrained_model)
     print('model loaded')
 
-    model.load_state_dict(torch.load('output/faster_rcnn_epoch_8.pth')['model'])
+    if cfg.PRETRAINED_RPN:
+        rpn_model_path = 'output/rpn.pth'
+        model.load_state_dict(torch.load(rpn_model_path)['model'])
+        print('loaded rpn!')
 
     # optimizer
     params = []
@@ -147,14 +150,12 @@ def train():
             im_data_variable = Variable(im_data)
 
             output = model(im_data_variable, gt_boxes, im_info)
-            # rois, rcnn_cls_loss, rcnn_box_loss, rpn_cls_loss, rpn_box_loss, _train_info = output
-            #
-            # loss = rcnn_cls_loss.mean() + rcnn_box_loss.mean() +\
-            #        rpn_cls_loss.mean() + rpn_box_loss.mean()
+            rois, _, _, \
+            rcnn_cls_loss, rcnn_box_loss, \
+            rpn_cls_loss, rpn_box_loss, _train_info = output
 
-            rois, rpn_cls_loss, rpn_box_loss, _train_info = output
-
-            loss = rpn_cls_loss.mean() + rpn_box_loss.mean()
+            loss = rcnn_cls_loss.mean() + rcnn_box_loss.mean() +\
+                   rpn_cls_loss.mean() + rpn_box_loss.mean()
 
             optimizer.zero_grad()
 
@@ -168,20 +169,18 @@ def train():
                 rpn_tn += _train_info['rpn_tn']
                 rpn_fg += _train_info['rpn_num_fg']
                 rpn_bg += _train_info['rpn_num_bg']
-                # rcnn_tp += _train_info['rcnn_tp']
-                # rcnn_tn += _train_info['rcnn_tn']
-                # rcnn_fg += _train_info['rcnn_num_fg']
-                # rcnn_bg += _train_info['rcnn_num_bg']
+                rcnn_tp += _train_info['rcnn_tp']
+                rcnn_tn += _train_info['rcnn_tn']
+                rcnn_fg += _train_info['rcnn_num_fg']
+                rcnn_bg += _train_info['rcnn_num_bg']
 
             if (step + 1) % args.display_interval == 0:
                 toc = time.time()
                 loss_temp /= args.display_interval
                 rpn_cls_loss_v = rpn_cls_loss.mean().item()
                 rpn_box_loss_v = rpn_box_loss.mean().item()
-                rcnn_cls_loss_v = 0
-                rcnn_box_loss_v = 0
-                # rcnn_cls_loss_v = rcnn_cls_loss.mean().item()
-                # rcnn_box_loss_v = rcnn_box_loss.mean().item()
+                rcnn_cls_loss_v = rcnn_cls_loss.mean().item()
+                rcnn_box_loss_v = rcnn_box_loss.mean().item()
 
                 print("[epoch %2d][step %4d/%4d] loss: %.4f, lr: %.2e, time cost %.1fs" \
                       % (epoch, step+1, iters_per_epoch, loss_temp, lr, toc - tic))
@@ -191,21 +190,22 @@ def train():
                 if cfg.VERBOSE:
                     print('\t\t\t RPN : [FG/BG] [%d/%d], FG: %.4f, BG: %.4f'
                           % (rpn_fg, rpn_bg, float(rpn_tp) / rpn_fg, float(rpn_tn) / rpn_bg))
-                    # print('\t\t\t RCNN: [FG/BG] [%d/%d], FG: %.4f, BG: %.4f' %
-                    #       (rcnn_fg, rcnn_bg, float(rcnn_tp) / rcnn_fg, float(rcnn_tn) / rcnn_bg))
+                    print('\t\t\t RCNN: [FG/BG] [%d/%d], FG: %.4f, BG: %.4f' %
+                          (rcnn_fg, rcnn_bg, float(rcnn_tp) / rcnn_fg, float(rcnn_tn) / rcnn_bg))
 
                 if args.use_tfboard:
                     n_iter = (epoch - 1) * iters_per_epoch + step + 1
                     writer.add_scalar('losses/loss', loss_temp, n_iter)
                     writer.add_scalar('losses/rpn_cls_loss_v', rpn_cls_loss_v, n_iter)
                     writer.add_scalar('losses/rpn_box_loss_v', rpn_box_loss_v, n_iter)
-                    # writer.add_scalar('losses/rcnn_cls_loss_v', rcnn_cls_loss_v, n_iter)
+                    writer.add_scalar('losses/rcnn_cls_loss_v', rcnn_cls_loss_v, n_iter)
+                    writer.add_scalar('losses/rcnn_box_loss_v', rcnn_box_loss_v, n_iter)
 
                     if cfg.VERBOSE:
                         writer.add_scalar('rpn/fg_acc', float(rpn_tp) / rpn_fg, n_iter)
                         writer.add_scalar('rpn/bg_acc', float(rpn_tn) / rpn_bg, n_iter)
-                        # writer.add_scalar('rcnn/fg_acc', float(rcnn_tp) / rcnn_fg, n_iter)
-                        # writer.add_scalar('rcnn/bg_acc', float(rcnn_tn) / rcnn_bg, n_iter)
+                        writer.add_scalar('rcnn/fg_acc', float(rcnn_tp) / rcnn_fg, n_iter)
+                        writer.add_scalar('rcnn/bg_acc', float(rcnn_tn) / rcnn_bg, n_iter)
 
                 loss_temp = 0
                 rpn_tp, rpn_tn, rpn_fg, rpn_bg = 0, 0, 0, 0

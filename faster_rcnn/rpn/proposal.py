@@ -133,7 +133,6 @@ def get_proposals(rpn_cls_prob, rpn_box_reg, cfg_key, im_info, anchor_scales, an
     proposals_keep = proposals_keep[keep, :]
 
     rpn_scores_keep = rpn_scores_keep[keep]
-    print(rpn_scores_keep)
 
     # ### tmp
     # print(proposals_keep[:30, :])

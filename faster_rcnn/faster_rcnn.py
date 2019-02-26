@@ -61,8 +61,9 @@ class FasterRCNN(nn.Module):
         features = self.backbone(x)
         rois, rpn_cls_loss, rpn_box_loss, _rpn_train_info = self.rpn(features, gt_boxes, im_info)
 
-        ## TMP DEBUG
-        return rois, rpn_cls_loss, rpn_box_loss, _rpn_train_info
+        # ## TMP DEBUG
+        # return rois, rpn_cls_loss, rpn_box_loss, _rpn_train_info
+
         if self.training:
             rois_data = build_proposal_target(rois, gt_boxes, im_info, self.n_classes)
             rois, label_target, boxes_target, boxes_inside_weight, boxes_outside_weight = rois_data
@@ -80,6 +81,8 @@ class FasterRCNN(nn.Module):
 
         rcnn_cls = self.rcnn_cls(out)
         rcnn_box = self.rcnn_box(out)
+
+        rcnn_cls_prob = F.softmax(rcnn_cls, 1)
 
         rcnn_cls_loss = 0
         rcnn_box_loss = 0
@@ -105,7 +108,7 @@ class FasterRCNN(nn.Module):
                 _train_info['rpn_tp'] = _rpn_train_info['rpn_tp']
                 _train_info['rpn_tn'] = _rpn_train_info['rpn_tn']
 
-        return rois, rcnn_cls_loss, rcnn_box_loss, rpn_cls_loss, rpn_box_loss, _train_info
+        return rois, rcnn_cls_prob, rcnn_box, rcnn_cls_loss, rcnn_box_loss, rpn_cls_loss, rpn_box_loss, _train_info
 
     def train(self, mode=True):
         nn.Module.train(self, mode)

@@ -10,6 +10,8 @@ __C.DEBUG = False
 
 __C.VERBOSE = True
 
+__C.PRETRAINED_RPN = True
+
 __C.TRAIN = EasyDict()
 
 __C.TEST = EasyDict()
@@ -127,6 +129,13 @@ __C.TRAIN.FG_THRESH = 0.5
 # overlap in [LO, HI))
 __C.TRAIN.BG_THRESH_HI = 0.5
 __C.TRAIN.BG_THRESH_LO = 0.1
+
+
+# RCNN inference option
+
+__C.TEST.BBOX_REG = True
+
+__C.TEST.NMS = 0.3
 
 
 
