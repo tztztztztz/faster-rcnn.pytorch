@@ -31,7 +31,7 @@ def parse_args():
                         default='voc07test', type=str)
 
     parser.add_argument('--check_epoch', dest='check_epoch',
-                        default='7', type=str)
+                        default='10', type=str)
 
     parser.add_argument('--output_dir', dest='output_dir',
                         default='output', type=str)
@@ -85,9 +85,11 @@ def test():
     else:
         thresh = 0.0
 
+    if not os.path.exists(args.output_dir):
+        os.makedirs(args.output_dir)
+
     start = time.time()
     max_per_image = 100
-
     det_file = os.path.join(args.output_dir, 'detections.pkl')
 
 

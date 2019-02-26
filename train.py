@@ -36,7 +36,7 @@ def parse_args():
                         default=1, type=int)
     parser.add_argument('--max_epochs', dest='max_epochs',
                         help='number of epochs to train',
-                        default=7, type=int)
+                        default=10, type=int)
     parser.add_argument('--use_tfboard', dest='use_tfboard',
                         default=True, type=bool)
     parser.add_argument('--output_dir', dest='output_dir',
@@ -95,18 +95,16 @@ def train():
 
     imdb, roidb = combined_roidb(args.imdb_name)
 
-
-
     train_dataset = RoiDataset(roidb)
     train_dataloader = DataLoader(train_dataset, args.batch_size, shuffle=True)
 
     model = FasterRCNN(pretrained=args.pretrained_model)
     print('model loaded')
 
-    if cfg.PRETRAINED_RPN:
-        rpn_model_path = 'output/rpn.pth'
-        model.load_state_dict(torch.load(rpn_model_path)['model'])
-        print('loaded rpn!')
+    # if cfg.PRETRAINED_RPN:
+    #     rpn_model_path = 'output/rpn.pth'
+    #     model.load_state_dict(torch.load(rpn_model_path)['model'])
+    #     print('loaded rpn!')
 
     # optimizer
     params = []

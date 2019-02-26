@@ -40,7 +40,7 @@ __C.TRAIN.USE_ALL_GT = True
 # Initial learning rate
 __C.TRAIN.LEARNING_RATE = 0.001
 
-__C.TRAIN.DECAY_LRS = [6,]
+__C.TRAIN.DECAY_LRS = [7, 9]
 
 # Momentum
 __C.TRAIN.MOMENTUM = 0.9
