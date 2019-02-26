@@ -1,7 +1,8 @@
 # Faster-RCNN Pytorch Implementaton
 
-
-
+This is a simple implementation of [Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks](https://arxiv.org/abs/1506.01497).  I mainly referred to two repositories below.
+- [longcw/faster_rcnn_pytorch](https://github.com/longcw/faster_rcnn_pytorch)
+- [jwyang/faster-rcnn.pytorch](https://github.com/jwyang/faster-rcnn.pytorch/tree/c7df5c92f42b41b7151156c04a6e26b1f8911516)
 
 ## Prerequisites
 
@@ -12,7 +13,7 @@
 - pillow
 - easydict
 - matplotlib
-- 
+
 ## Purpose
 
 - [x] Training and testing on VOC
@@ -58,7 +59,7 @@ You can inspect the accuray of both foreground and background samples in RPN and
 	
 3. Compile `roi_pooling layer` and `gpu_nms`
     
-        cd $PROJECT/faster-rcnn
+        cd $PROJECT/faster_rcnn
         sh make.sh
 
 ## Training on PASCAL VOC
