@@ -75,7 +75,7 @@ def _draw_single_box(image, xmin, ymin, xmax, ymax, display_str, font=FONT, colo
     return image
 
 
-def draw_detection_boxes(image, boxes, gt_classes=None, class_names=None):
+def draw_detection_boxes(image, boxes, gt_classes=None, class_names=None, thresh=0):
     """
     Draw bounding boxes via PIL.Image library
 
@@ -94,6 +94,8 @@ def draw_detection_boxes(image, boxes, gt_classes=None, class_names=None):
     for i in range(num_boxes):
         bbox = tuple(np.round(boxes[i, :4]).astype(np.int64))
         score = boxes[i, 4]
+        if score < thresh:
+            continue
         gt_class_ind = gt_classes[i]
         class_name = class_names[gt_class_ind]
         disp_str = '{}: {:.2f}'.format(class_name, score)
