@@ -27,6 +27,7 @@ This is a simple implementation of [Faster R-CNN: Towards Real-Time Object Detec
 | :--: | :--: | :--: | :--: |:--: |
 |this repo|VOC2007|VOC2007|res50|71.6|
 |original paper|VOC2007|VOC2007|res50|-|
+|this repo|VOC2007+VOC2012|VOC2007|res50|76.0|
 
 ## Visualization
 
