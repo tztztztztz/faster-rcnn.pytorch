@@ -17,17 +17,16 @@ This is a simple implementation of [Faster R-CNN: Towards Real-Time Object Detec
 ## Purpose
 
 - [x] Training and testing on VOC
-- [ ] VGG16
 - [x] ResNet-50
-- [ ] ResNet-101
+- [x] ResNet-101
 
 ## Main Results
 
-| | training set | test set | network| mAP@600 |
-| :--: | :--: | :--: | :--: |:--: |
-|this repo|VOC2007|VOC2007|res50|71.6|
-|original paper|VOC2007|VOC2007|res50|-|
-|this repo|VOC2007+VOC2012|VOC2007|res50|76.0|
+voc07+12trainval/voc07test
+
+|original/res101|this/res101 | this/res50|
+| :--: | :--: | :--: |
+|76.4|76.9|76.0|
 
 ## Visualization
 
