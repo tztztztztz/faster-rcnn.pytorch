@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from config.config import config as cfg
 from faster_rcnn.rpn.proposal_target import build_proposal_target
-from faster_rcnn.resnet import resnet50
+from faster_rcnn.resnet import resnet50, resnet101
 from faster_rcnn.rpn.rpn import RPN
 from faster_rcnn.roi_pooling.modules.roi_pool import _RoIPooling
 from faster_rcnn.util.network import _smooth_l1_loss, normal_init
@@ -15,8 +15,13 @@ class FasterRCNN(nn.Module):
     def __init__(self, backbone='res50', pretrained=None):
         super(FasterRCNN, self).__init__()
 
-        assert backbone == 'res50', 'Only support ResNet50.'
-        resnet = resnet50()
+        if backbone == 'res50':
+            resnet = resnet50()
+        elif backbone == 'res101':
+            resnet = resnet101()
+        else:
+            raise NotImplementedError
+
         if pretrained:
             print('Loading pretrained weights from %s' % pretrained)
             state_dict = torch.load(pretrained)

@@ -24,6 +24,9 @@ def parse_args():
     parser.add_argument('--cuda', dest='use_cuda',
                         action='store_true', default=None)
 
+    parser.add_argument('--net', dest='net',
+                        default='res50', type=str)
+
     parser.add_argument('--vis', dest='vis',
                         action='store_true', default=None)
 
@@ -46,7 +49,7 @@ def test():
 
     print('Call with ', args)
 
-    model_name = 'faster_rcnn_epoch_{}.pth'.format(args.check_epoch)
+    model_name = 'faster_{}_epoch_{}.pth'.format(args.net, args.check_epoch)
     model_path = os.path.join(args.output_dir, model_name)
 
     # load dataset
@@ -71,7 +74,7 @@ def test():
 
     # load model
 
-    model = FasterRCNN()
+    model = FasterRCNN(backbone=args.net)
 
     model.load_state_dict(torch.load(model_path)['model'])
 

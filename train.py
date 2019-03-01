@@ -27,6 +27,8 @@ def parse_args():
     parser = argparse.ArgumentParser(description='faster rcnn')
     parser.add_argument('--dataset', dest='dataset',
                         default='voc07trainval', type=str)
+    parser.add_argument('--net', dest='net',
+                        default='res50', type=str)
     parser.add_argument('--batch_size', dest='batch_size',
                         default=1, type=int)
     parser.add_argument('--cuda', dest='use_cuda',
@@ -47,13 +49,13 @@ def parse_args():
                         default=100, type=int)
     parser.add_argument('--save_interval', dest='save_interval',
                         default=1, type=int)
+
     args = parser.parse_args()
     return args
 
 
 def train():
     args = parse_args()
-    args.pretrained_model = os.path.join('data', 'pretrained', 'resnet50-caffe.pth')
     args.decay_lrs = cfg.TRAIN.DECAY_LRS
 
     cfg.USE_GPU_NMS = True if args.use_cuda else False
@@ -82,6 +84,15 @@ def train():
     else:
         raise NotImplementedError
 
+    if args.net == 'res50':
+        fname = 'resnet50-caffe.pth'
+    elif args.net == 'res101':
+        fname = 'resnet101-caffe.pth'
+    else:
+        raise NotImplementedError
+
+    args.pretrained_model = os.path.join('data', 'pretrained', fname)
+
     output_dir = args.output_dir
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
@@ -104,7 +115,7 @@ def train():
     train_dataset = RoiDataset(roidb)
     train_dataloader = DataLoader(train_dataset, args.batch_size, shuffle=True)
 
-    model = FasterRCNN(pretrained=args.pretrained_model)
+    model = FasterRCNN(backbone=args.net, pretrained=args.pretrained_model)
     print('model loaded')
 
     # if cfg.PRETRAINED_RPN:
@@ -217,7 +228,7 @@ def train():
                 tic = time.time()
 
         if epoch % args.save_interval == 0:
-            save_name = os.path.join(output_dir, 'faster_rcnn_epoch_{}.pth'.format(epoch))
+            save_name = os.path.join(output_dir, 'faster_{}_epoch_{}.pth'.format(args.net, epoch))
             torch.save({
                 'model': model.state_dict(),
                 'epoch': epoch,
