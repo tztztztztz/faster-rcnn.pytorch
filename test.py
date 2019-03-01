@@ -25,7 +25,7 @@ def parse_args():
                         action='store_true', default=None)
 
     parser.add_argument('--net', dest='net',
-                        default='res50', type=str)
+                        default='res101', type=str)
 
     parser.add_argument('--vis', dest='vis',
                         action='store_true', default=None)

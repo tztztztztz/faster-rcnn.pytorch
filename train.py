@@ -28,7 +28,7 @@ def parse_args():
     parser.add_argument('--dataset', dest='dataset',
                         default='voc07trainval', type=str)
     parser.add_argument('--net', dest='net',
-                        default='res50', type=str)
+                        default='res101', type=str)
     parser.add_argument('--batch_size', dest='batch_size',
                         default=1, type=int)
     parser.add_argument('--cuda', dest='use_cuda',
@@ -40,7 +40,7 @@ def parse_args():
                         help='number of epochs to train',
                         default=10, type=int)
     parser.add_argument('--use_tfboard', dest='use_tfboard',
-                        default=True, type=bool)
+                        default=False, type=bool)
     parser.add_argument('--output_dir', dest='output_dir',
                         default='output', type=str)
     parser.add_argument('--exp_name', dest='exp_name',
