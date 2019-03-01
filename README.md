@@ -70,7 +70,7 @@ Please follow the instructions of this [repository](https://github.com/tztztztzt
 
 ### Download the pretrained model on ImageNet
 
-Get the model [Google Drive](https://drive.google.com/open?id=0B7fNdx_jAqhtbllXbWxMVEdZclE), and put it at `$PROJECT/data/pretrained` folder. See more detail at [ruotian/pytorch-resent](https://github.com/ruotianluo/pytorch-resnet)
+Get the model [ResNet-50](https://drive.google.com/open?id=0B7fNdx_jAqhtbllXbWxMVEdZclE) [ResNet-101](https://drive.google.com/open?id=0B7fNdx_jAqhtbllXbWxMVEdZclE), and put it at `$PROJECT/data/pretrained` folder. See more detail at [ruotian/pytorch-resent](https://github.com/ruotianluo/pytorch-resnet)
 
 ### Train
     python train.py --cuda
