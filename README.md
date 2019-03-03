@@ -28,6 +28,8 @@ voc07+12trainval/voc07test
 | :--: | :--: | :--: |
 |76.4|76.9|76.0|
 
+Running time: ~100ms(10FPS) on a GTX 1080
+
 ## Visualization
 
 You can inspect the accuray of both foreground and background samples in RPN and RCNN 
